@@ -26,13 +26,16 @@ public class SlidingGame implements Configuration {
      *
      * @param root: String to indicate this is the parent object of the first
      * instances of the game.
-     * @param start: a one dimensional array containing the initial board. The
+     * 
+     * @param start : a one dimensional array containing the initial board. The
      * elements of start are stored row-wise.
      */
     public SlidingGame(String root){
-        
+
     }
-    
+    public int [][] getBoard(){
+        return board;
+    }
     public SlidingGame(int[] start, SlidingGame parent) {
         board = new int[N][N];
         
@@ -68,8 +71,8 @@ public class SlidingGame implements Configuration {
     }
 
     @Override
-    public boolean equals(Object o) {
-        throw new UnsupportedOperationException("equals : not supported yet.");
+    public boolean equals(Object o) {  
+        return this.toString().equals(o.toString());
     }
 
     @Override
@@ -105,6 +108,26 @@ public class SlidingGame implements Configuration {
     @Override
     public Configuration parent() {
         return parentState;
+    }
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        for ( int x = N-1; x >= 0; x-- ) {
+            for ( int y = N-1; y >= 0; y-- ) {
+                hash = 31 * hash + board[x][y];
+            }
+        }
+        return hash;
+}
+    
+    @Override
+    public List<Configuration> pathFromRoot(){
+        LinkedList <Configuration> path = new LinkedList<>();
+        if(this.parent()!= null){
+            System.out.println(this);
+            this.parent().pathFromRoot();
+        }
+        return path;
     }
 
 }
